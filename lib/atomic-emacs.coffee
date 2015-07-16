@@ -301,6 +301,10 @@ class AtomicEmacs
     maxOffset = editorElement.pixelPositionForBufferPosition([maxRow, 0])
     editor.setScrollTop((minOffset.top + maxOffset.top - editor.getHeight())/2)
 
+  stopMark: (event) ->
+    for cursor in @editor(event).getCursors()
+      Mark.for(cursor).set().deactivate()
+
   deleteIndentation: =>
     editor = @editor(event)
     return unless editor
@@ -347,6 +351,7 @@ module.exports =
       "atomic-emacs:transpose-lines": (event) -> atomicEmacs.transposeLines(event)
       "atomic-emacs:transpose-words": (event) -> atomicEmacs.transposeWords(event)
       "atomic-emacs:upcase-word-or-region": (event) -> atomicEmacs.upcaseWordOrRegion(event)
+      "atomic-emacs:stop-mark": (event) -> atomicEmacs.stopMark(event)
       "core:cancel": (event) -> atomicEmacs.keyboardQuit(event)
 
   destroy: ->
